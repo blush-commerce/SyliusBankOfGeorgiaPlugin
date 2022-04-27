@@ -1,7 +1,7 @@
 {
-    "name": "sylius/plugin-skeleton",
+    "name": "blush-commerce/sylius-bank-of-georgia-plugin",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "Sylius plugin for working with Bank of Georgia payments API",
     "keywords": [
         "sylius",
         "sylius-plugin"
