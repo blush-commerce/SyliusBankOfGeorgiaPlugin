@@ -1,7 +1,0 @@
-# Delete these routes and define your own shop routes here
-
-gigamarr_sylius_bank_of_georgia_plugin_hello:
-    path: /hello
-    defaults:
-        _controller: Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloController::sayHello
-        name: ~

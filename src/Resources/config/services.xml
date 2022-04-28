@@ -2,7 +2,14 @@
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloController" autowire="true" autoconfigure="true" public="true" />
-        <!-- Put your services here -->
+        <service id="gigamarr_sylius_bank_of_georgia_plugin.bank_of_georgia_payment" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
+            <argument>Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\BankOfGeorgiaPaymentGatewayFactory</argument>
+            <tag name="payum.gateway_factory_builder" factory="bank_of_georgia_payment" />
+        </service>
+
+        <service id="Gigamarr\SyliusBankOfGeorgiaPlugin\Form\Type\BankOfGeorgiaGatewayConfigurationType">
+            <tag name="sylius.gateway_configuration_type" type="bank_of_georgia_payment" labe="Bank Of Georgia Payment" />
+            <tag name="form.type" />
+        </service>
     </services>
 </container>
