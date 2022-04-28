@@ -1,4 +1,4 @@
-app.sylius_payment:
+gigamarr_sylius_bank_of_georgia_plugin.bank_of_georgia_payment:
     class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
     arguments: [ Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\BankOfGeorgiaPaymentGatewayFactory ]
     tags:
