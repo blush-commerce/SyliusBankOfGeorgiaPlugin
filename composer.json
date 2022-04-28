@@ -1,7 +1,7 @@
 {
-    "name": "blush-commerce/sylius-bank-of-georgia-plugin",
+    "name": "gigamarr/sylius-bank-of-georgia-plugin",
     "type": "sylius-plugin",
-    "description": "Sylius plugin for working with Bank of Georgia payments API",
+    "description": "Sylius plugin for working with Bank of Georgia payments API.",
     "keywords": [
         "sylius",
         "sylius-plugin"
