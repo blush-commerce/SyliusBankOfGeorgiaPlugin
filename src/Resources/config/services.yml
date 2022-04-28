@@ -1,0 +1,10 @@
+app.sylius_payment:
+    class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+    arguments: [ Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\BankOfGeorgiaPaymentGatewayFactory ]
+    tags:
+      - { name: payum.gateway_factory_builder, factory: bank_of_georgia_payment }
+
+Gigamarr\SyliusBankOfGeorgiaPlugin\Form\Type\BankOfGeorgiaGatewayConfigurationType:
+    tags:
+      - { name: sylius.gateway_configuration_type, type: bank_of_georgia_payment, label: 'Bank Of Georgia Payment' }
+      - { name: form.type }
