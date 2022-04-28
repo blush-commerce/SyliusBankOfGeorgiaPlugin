@@ -13,5 +13,6 @@ final class BankOfGeorgiaGatewayConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('client_id', TextType::class);
+        $builder->add('secret_key', TextType::class);
     }
 }
