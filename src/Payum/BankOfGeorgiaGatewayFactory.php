@@ -7,17 +7,17 @@ namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
-final class SyliusPaymentGatewayFactory extends GatewayFactory
+final class BankOfGeorgiaGatewayFactory extends GatewayFactory
 {
     protected function populateConfig(ArrayObject $config): void
     {
         $config->defaults([
-            'payum.factory_name' => 'sylius_payment',
-            'payum.factory_title' => 'Sylius Payment',
+            'payum.factory_name' => 'bank_of_georgia_payment',
+            'payum.factory_title' => 'Bank of Georgia',
         ]);
 
         $config['payum.api'] = function (ArrayObject $config) {
-            return new SyliusApi($config['api_key']);
+            return new BankOfGeorgiaClientId($config['client_id']);
         };
     }
 }
