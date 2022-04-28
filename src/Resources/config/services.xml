@@ -11,5 +11,10 @@
             <tag name="sylius.gateway_configuration_type" type="bank_of_georgia_payment" label="Bank of Georgia" />
             <tag name="form.type" />
         </service>
+
+        <service id="Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\CaptureAction" public=true>
+            <argument type="service" id="sylius.http_client" />
+            <tag name="payum.action" factory="sylius_payment" alias="payum.action.capture" />
+        </service>
     </services>
 </container>
