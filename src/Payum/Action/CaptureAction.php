@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gigamarr\SyliusBankOfGeorgiaPlugin;
+namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Capture;

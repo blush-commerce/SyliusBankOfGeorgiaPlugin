@@ -14,6 +14,7 @@ final class BankOfGeorgiaGatewayFactory extends GatewayFactory
         $config->defaults([
             'payum.factory_name' => 'bank_of_georgia_payment',
             'payum.factory_title' => 'Bank of Georgia',
+            'payum.action.capture' => new Action\CaptureAction()
         ]);
 
         $config['payum.client_id'] = function (ArrayObject $config) {
