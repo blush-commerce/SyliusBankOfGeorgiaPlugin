@@ -20,8 +20,6 @@ final class CaptureAction implements ActionInterface
 
     public function execute($request)
     {
-
-        $name = "GIGA";
     }
 
     public function supports($request): bool
