@@ -10,9 +10,9 @@
             <tag name="payum.gateway_factory_builder" factory="bank_of_georgia" />
         </service>
 
-        <service id="Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\AuthorizeAction" public="true">
-            <argument type="service" id="sylius.http_client" />
-            <tag name="payum.action" factory="bank_of_georgia" alias="payum.action.authorize" />
-        </service>
+        <service
+            id="gigamarr_sylius_bank_of_georgia_plugin.resolver.bank_of_georgia_authorization"
+            class="Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\BankOfGeorgiaAuthorizationResolver"
+        />
     </services>
 </container>

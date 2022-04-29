@@ -1,0 +1,8 @@
+winzou_state_machine:
+    sylius_order_checkout:
+        callbacks:
+            after:
+                complete_pay_pal_order:
+                    on: ['complete']
+                    do: ['@gigamarr_sylius_bank_of_georgia_plugin.resolver.bank_of_georgia_authorization', 'resolve']
+                    args: ['object']
