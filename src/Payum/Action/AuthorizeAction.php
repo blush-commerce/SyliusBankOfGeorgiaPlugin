@@ -9,7 +9,7 @@ use Payum\Core\Request\Capture;
 use GuzzleHttp\Client;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 
-final class CaptureAction implements ActionInterface
+final class AuthorizeAction implements ActionInterface
 {
     private Client $client;
 

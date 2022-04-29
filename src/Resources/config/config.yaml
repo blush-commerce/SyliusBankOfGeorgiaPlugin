@@ -1,0 +1,8 @@
+winzou_state_machine:
+    sylius_order_checkout:
+        callbacks:
+            after:
+                authorize_bank_of_georgia_order:
+                    on: ['complete']
+                    do: ['@GigamarrSyliusBankOfGeorgiaPlugin\Payum\Action\AuthorizeAction', 'execute']
+                    args: ['object']
