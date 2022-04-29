@@ -1,6 +1,6 @@
 <?php
 
-namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum;
+namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject;
 
 final class BankOfGeorgiaSecretKey
 {

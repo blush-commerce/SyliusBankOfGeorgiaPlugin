@@ -6,7 +6,7 @@
             id="gigamarr_sylius_bank_of_georgia_plugin.bank_of_georgia"
             class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder"
         >
-            <argument>Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\BankOfGeorgiaGatewayFactory</argument>
+            <argument>Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Factory\BankOfGeorgiaGatewayFactory</argument>
             <tag name="payum.gateway_factory_builder" factory="bank_of_georgia" />
         </service>
 

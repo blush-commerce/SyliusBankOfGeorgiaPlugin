@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum;
+namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject;
 
 final class BankOfGeorgiaClientId
 {
