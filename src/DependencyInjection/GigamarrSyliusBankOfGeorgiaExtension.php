@@ -21,6 +21,7 @@ final class GigamarrSyliusBankOfGeorgiaExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $container->setParameter('gigamarr.sylius_bank_of_georgia_plugin.api_base_url', 'https://ipay.ge/opay/api/v1');
+        $container->setParameter('gigamarr.sylius_bank_of_georgia_plugin.factory_name', 'bank_of_georgia');
 
         $loader->load('services.yaml');
     }

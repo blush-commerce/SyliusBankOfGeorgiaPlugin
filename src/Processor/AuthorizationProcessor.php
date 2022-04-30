@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Processor;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Payum\Core\Payum;
 use Psr\Log\LoggerInterface;
@@ -13,6 +14,7 @@ final class AuthorizationProcessor implements ProcessorInterface
 {
     public function __construct(
         private Payum $payum,
+        private GatewayConfigResolverInterface $gatewayConfigResolver,
         private BankOfGeorgiaClient $bankOfGeorgiaClient,
         private LoggerInterface $logger
     )
@@ -21,6 +23,7 @@ final class AuthorizationProcessor implements ProcessorInterface
 
     public function process(OrderInterface $order): void
     {
-        // TODO: execute authorization action
+        $gatewayConfig = $this->gatewayConfigResolver->resolve()->getConfig();
+        $auth = $this->bankOfGeorgiaClient->authorize($gatewayConfig['client_id'], $gatewayConfig['secret_key']);
     }
 }
