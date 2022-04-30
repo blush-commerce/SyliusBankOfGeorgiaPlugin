@@ -1,7 +1,8 @@
 services:
-    gigamarr.sylius_bank_of_georgia_plugin.processor.authorization:
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor:
         class: Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor
         public: true
         arguments:
             - '@payum'
-            - '@gigamarr.sylius_bank_of_georgia_plugin.client.bank_of_georgia'
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
+            - '@monolog.logger.bank_of_georgia'

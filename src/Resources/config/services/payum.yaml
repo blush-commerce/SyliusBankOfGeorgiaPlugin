@@ -1,5 +1,5 @@
 services:
-    gigamarr.sylius_bank_of_georgia_plugin.bank_of_georgia:
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Factory\BankOfGeorgiaGatewayFactory:
         class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
         arguments:
             - Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Factory\BankOfGeorgiaGatewayFactory

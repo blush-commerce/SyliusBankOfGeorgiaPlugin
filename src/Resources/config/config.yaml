@@ -4,7 +4,7 @@ winzou_state_machine:
             after:
                 authorize_bank_of_georgia_order:
                     on: ['complete']
-                    do: ['@gigamarr.sylius_bank_of_georgia_plugin.processor.authorization', 'process']
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor', 'process']
                     args: ['object']
 
 monolog:
