@@ -4,5 +4,15 @@ winzou_state_machine:
             after:
                 authorize_bank_of_georgia_order:
                     on: ['complete']
-                    do: ['@gigamarr.sylius_bank_of_georgia_plugin.processor.authorization', 'resolve']
+                    do: ['@gigamarr.sylius_bank_of_georgia_plugin.processor.authorization', 'process']
                     args: ['object']
+
+monolog:
+    channels:
+        - bank_of_georgia
+    handlers:
+        bank_of_georgia:
+            type: stream
+            path: "%kernel.logs_dir%/bank_of_georgia.log"
+            level: debug
+            channels: [bank_of_georgia]
