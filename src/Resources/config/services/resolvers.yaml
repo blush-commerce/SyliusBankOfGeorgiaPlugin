@@ -1,6 +1,0 @@
-services:
-    gigamarr.sylius_bank_of_georgia_plugin.resolver.authorize:
-        class: Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\AuthorizeResolver
-        public: true
-        arguments:
-            - '@payum'
