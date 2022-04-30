@@ -24,6 +24,6 @@ final class AuthorizationProcessor implements ProcessorInterface
     public function process(OrderInterface $order): void
     {
         $gatewayConfig = $this->gatewayConfigResolver->resolve()->getConfig();
-        $auth = $this->bankOfGeorgiaClient->authorize($gatewayConfig['client_id'], $gatewayConfig['secret_key']);
+        $auth = $this->bankOfGeorgiaClient->authenticate($gatewayConfig['client_id'], $gatewayConfig['secret_key']);
     }
 }
