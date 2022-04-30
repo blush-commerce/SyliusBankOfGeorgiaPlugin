@@ -1,0 +1,8 @@
+services:
+    gigamarr.sylius_bank_of_georgia_plugin.form.type.bank_of_georgia_gateway_configuration:
+        class: Gigamarr\SyliusBankOfGeorgiaPlugin\Form\Type\BankOfGeorgiaGatewayConfigurationType
+        tags:
+            - name: sylius.gateway_configuration_type
+              type: bank_of_georgia
+              label: Bank of Georgia
+            - name: form.type
