@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container
+    xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
     <services>
         <service
             id="gigamarr_sylius_bank_of_georgia_plugin.bank_of_georgia"
@@ -9,10 +13,5 @@
             <argument>Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Factory\BankOfGeorgiaGatewayFactory</argument>
             <tag name="payum.gateway_factory_builder" factory="bank_of_georgia" />
         </service>
-
-        <service
-            id="gigamarr_sylius_bank_of_georgia_plugin.resolver.bank_of_georgia_authorization"
-            class="Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\BankOfGeorgiaAuthorizationResolver"
-        />
     </services>
 </container>

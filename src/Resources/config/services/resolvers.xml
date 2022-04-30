@@ -5,9 +5,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
-    <imports>
-        <import resource="services/form_types.xml" />
-        <import resource="services/payum.xml" />
-        <import resource="services/resolvers.xml" />
-    </imports>
+    <services>
+        <service
+            id="gigamarr_sylius_bank_of_georgia_plugin.resolver.authorize"
+            class="Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\AuthorizeResolver"
+            public="true"
+        />
+    </services>
 </container>
