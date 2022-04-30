@@ -1,4 +1,4 @@
 imports:
-    - { resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/services/form_types.yaml" }
-    - { resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/services/payum.yaml" }
-    - { resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/services/resolvers.yaml" }
+    - { resource: "services/form_types.yaml" }
+    - { resource: "services/payum.yaml" }
+    - { resource: "services/resolvers.yaml" }
