@@ -1,0 +1,6 @@
+services:
+    gigamarr.sylius_bank_of_georgia_plugin.client.bank_of_georgia:
+        class: Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient
+        arguments:
+            - '@sylius.http_client'
+            - '%gigamarr.sylius_bank_of_georgia_plugin.api_base_url%'

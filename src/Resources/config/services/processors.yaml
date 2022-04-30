@@ -4,3 +4,4 @@ services:
         public: true
         arguments:
             - '@payum'
+            - '@gigamarr.sylius_bank_of_georgia_plugin.client.bank_of_georgia'
