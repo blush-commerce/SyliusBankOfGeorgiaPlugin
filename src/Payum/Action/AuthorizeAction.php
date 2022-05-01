@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Authorize;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 
 final class AuthorizeAction implements ActionInterface
 {
-
-    public function __construct(private BankOfGeorgiaClient $client)
+    public function __construct(
+    )
     {
     }
 

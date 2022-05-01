@@ -20,7 +20,7 @@ class BankOfGeorgiaClient
     {
     }
 
-    public function authenticate(): array
+    private function authenticate(): array
     {
         $gatewayConfig = $this->gatewayConfigResolver->resolve()->getConfig();
 
