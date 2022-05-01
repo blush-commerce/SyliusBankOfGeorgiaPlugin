@@ -49,11 +49,7 @@ class BankOfGeorgiaClient
     {
         $accessToken = $this->authenticate()['access_token'];
 
-        if (isset($options['headers'])) {
-            $options['headers'] = array_merge([
-                'Authorization' => "Bearer $accessToken"
-            ], $options['headers']);
-        }
+        $options['headers']['Authorization'] = "Bearer $accessToken";
 
         return $this->client->request('POST', $this->baseUrl . $uri, $options);
     }

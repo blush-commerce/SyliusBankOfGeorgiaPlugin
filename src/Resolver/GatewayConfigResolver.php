@@ -20,7 +20,11 @@ final class GatewayConfigResolver implements GatewayConfigResolverInterface
     {
         $gatewayConfig = $this->gatewayConfigRepository->findOneBy(['factoryName' => $this->factoryName]);
 
-        if ($gatewayConfig) {
+        if (
+            $gatewayConfig &&
+            isset($gatewayConfig->getConfig()['client_id']) &&
+            isset($gatewayConfig->getConfig()['secret_key'])
+        ) {
             return $gatewayConfig;
         }
 
