@@ -1,7 +1,6 @@
 services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloWorldController:
         arguments:
-            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver'
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
         tags:
             - name: 'controller.service_arguments'

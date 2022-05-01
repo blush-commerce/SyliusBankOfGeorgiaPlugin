@@ -3,6 +3,4 @@ services:
         public: true
         arguments:
             - '@payum'
-            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver'
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
-            - '@monolog.logger.bank_of_georgia'
