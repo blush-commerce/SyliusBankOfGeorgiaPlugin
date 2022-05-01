@@ -6,24 +6,28 @@ namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Authorize;
-use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
+use Psr\Log\LoggerInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 
 final class AuthorizeAction implements ActionInterface
 {
     public function __construct(
+        private LoggerInterface $logger
     )
-    {
+    {    
     }
-
+    
     public function execute($request)
     {
+        /** @var OrderInterface */
+        $order = $request->getModel();
     }
 
     public function supports($request): bool
     {
         return
             $request instanceof Authorize &&
-            $request->getModel() instanceof SyliusPaymentInterface
+            $request->getModel() instanceof OrderInterface
         ;
     }
 }

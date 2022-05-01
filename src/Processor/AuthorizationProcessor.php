@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Processor;
 
-use Payum\Core\Request\Authorize;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
+use Payum\Core\Request\Authorize;
 
 final class AuthorizationProcessor implements ProcessorInterface
 {
@@ -39,7 +39,7 @@ final class AuthorizationProcessor implements ProcessorInterface
         $this
             ->payum
             ->getGateway($gatewayConfig->getGatewayName())
-            ->execute()
+            ->execute(new Authorize($order))
         ;
     }
 }

@@ -1,5 +1,5 @@
 services:
-    Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver:
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Provider\GatewayConfigProvider:
         arguments:
             - '@sylius.repository.gateway_config'
             - '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%'

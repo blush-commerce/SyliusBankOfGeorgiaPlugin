@@ -4,4 +4,4 @@ imports:
     - { resource: "services/form_types.yaml" }
     - { resource: "services/payum.yaml" }
     - { resource: "services/processors.yaml" }
-    - { resource: "services/resolvers.yaml" }
+    - { resource: "services/providers.yaml" }

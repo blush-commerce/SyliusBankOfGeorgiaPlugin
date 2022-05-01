@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Client;
 
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Provider\GatewayConfigProvider;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -13,7 +13,7 @@ class BankOfGeorgiaClient
 {
     public function __construct(
         private ClientInterface $client,
-        private GatewayConfigResolver $gatewayConfigResolver,
+        private GatewayConfigProvider $gatewayConfigResolver,
         private string $baseUrl,
         private LoggerInterface $logger
     )
@@ -22,7 +22,7 @@ class BankOfGeorgiaClient
 
     private function authenticate(): array
     {
-        $gatewayConfig = $this->gatewayConfigResolver->resolve()->getConfig();
+        $gatewayConfig = $this->gatewayConfigResolver->get()->getConfig();
 
         $response = $this->client->request(
             'POST',

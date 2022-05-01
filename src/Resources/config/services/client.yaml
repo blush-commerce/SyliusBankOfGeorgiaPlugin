@@ -2,6 +2,6 @@ services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient:
         arguments:
             - '@sylius.http_client'
-            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver'
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Provider\GatewayConfigProvider'
             - '%gigamarr.sylius_bank_of_georgia_plugin.api_base_url%'
             - '@monolog.logger.bank_of_georgia'

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver;
+namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Provider;
 
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-final class GatewayConfigResolver implements GatewayConfigResolverInterface
+final class GatewayConfigProvider implements GatewayConfigProviderInterface
 {
     public function __construct(
         private RepositoryInterface $gatewayConfigRepository,
@@ -16,7 +16,7 @@ final class GatewayConfigResolver implements GatewayConfigResolverInterface
     {
     }
 
-    public function resolve(): GatewayConfigInterface
+    public function get(): GatewayConfigInterface
     {
         $gatewayConfig = $this->gatewayConfigRepository->findOneBy(['factoryName' => $this->factoryName]);
 
