@@ -1,8 +1,7 @@
 services:
-    Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor:
-        public: true
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloWorldController:
         arguments:
-            - '@payum'
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Resolver\GatewayConfigResolver'
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
-            - '@monolog.logger.bank_of_georgia'
+        tags:
+            - name: 'controller.service_arguments'

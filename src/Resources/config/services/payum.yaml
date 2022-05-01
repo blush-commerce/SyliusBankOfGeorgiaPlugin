@@ -6,3 +6,9 @@ services:
         tags:
             - name: payum.gateway_factory_builder
               factory: bank_of_georgia
+
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\AuthorizeAction:
+        arguments:
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
+        tags:
+            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.authorize }

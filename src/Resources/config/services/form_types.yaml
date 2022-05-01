@@ -1,6 +1,5 @@
 services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Form\Type\BankOfGeorgiaGatewayConfigurationType:
-        class: Gigamarr\SyliusBankOfGeorgiaPlugin\Form\Type\BankOfGeorgiaGatewayConfigurationType
         tags:
             - name: sylius.gateway_configuration_type
               type: bank_of_georgia

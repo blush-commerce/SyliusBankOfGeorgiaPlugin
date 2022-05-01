@@ -15,4 +15,4 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/bank_of_georgia.log"
             level: debug
-            channels: [bank_of_georgia]
+            channels: [ bank_of_georgia ]

@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\Request\Capture;
-use GuzzleHttp\Client;
+use Payum\Core\Request\Authorize;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 
 final class AuthorizeAction implements ActionInterface
 {
-    private Client $client;
 
-    public function __construct(Client $client)
+    public function __construct(private BankOfGeorgiaClient $client)
     {
-        $this->client = $client;
     }
 
     public function execute($request)
@@ -25,7 +23,7 @@ final class AuthorizeAction implements ActionInterface
     public function supports($request): bool
     {
         return
-            $request instanceof Capture &&
+            $request instanceof Authorize &&
             $request->getModel() instanceof SyliusPaymentInterface
         ;
     }
