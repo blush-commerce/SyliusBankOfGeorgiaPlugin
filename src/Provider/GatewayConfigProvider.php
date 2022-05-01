@@ -16,7 +16,7 @@ final class GatewayConfigProvider implements GatewayConfigProviderInterface
     {
     }
 
-    public function get(): GatewayConfigInterface
+    public function get(): ?array
     {
         $gatewayConfig = $this->gatewayConfigRepository->findOneBy(['factoryName' => $this->factoryName]);
 
@@ -25,7 +25,7 @@ final class GatewayConfigProvider implements GatewayConfigProviderInterface
             isset($gatewayConfig->getConfig()['client_id']) &&
             isset($gatewayConfig->getConfig()['secret_key'])
         ) {
-            return $gatewayConfig;
+            return $gatewayConfig->getConfig();
         }
 
         // TODO: throw an error or log that gateway with given factory name has not been found

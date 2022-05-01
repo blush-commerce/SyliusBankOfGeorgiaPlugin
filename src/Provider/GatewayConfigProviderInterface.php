@@ -8,5 +8,5 @@ use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 
 interface GatewayConfigProviderInterface
 {
-    public function get(): GatewayConfigInterface;
+    public function get(): ?array;
 }

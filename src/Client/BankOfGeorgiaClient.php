@@ -13,7 +13,7 @@ class BankOfGeorgiaClient
 {
     public function __construct(
         private ClientInterface $client,
-        private GatewayConfigProvider $gatewayConfigResolver,
+        private GatewayConfigProvider $gatewayConfigProvider,
         private string $baseUrl,
         private LoggerInterface $logger
     )
@@ -22,7 +22,7 @@ class BankOfGeorgiaClient
 
     private function authenticate(): array
     {
-        $gatewayConfig = $this->gatewayConfigResolver->get()->getConfig();
+        $gatewayConfig = $this->gatewayConfigProvider->get();
 
         $response = $this->client->request(
             'POST',
