@@ -37,8 +37,8 @@ final class AuthorizeAction implements ActionInterface
         ]);
 
         if ($createOrderResponse->getStatusCode() === 200) {
+            $this->logger->log('DEBUG', $createOrderResponse->getBody()->getContents());
             $responseContent = json_decode($createOrderResponse->getBody()->getContents(), true);
-
             throw new HttpRedirect($responseContent['links'][1]['href']);
         }
 
