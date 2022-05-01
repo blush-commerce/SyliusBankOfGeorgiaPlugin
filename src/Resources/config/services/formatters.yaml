@@ -1,0 +1,2 @@
+services:
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter: ~

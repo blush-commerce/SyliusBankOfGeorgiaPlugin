@@ -10,6 +10,8 @@ services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\AuthorizeAction:
         public: true
         arguments:
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter'
             - '@monolog.logger.bank_of_georgia'
         tags:
             - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.authorize }
