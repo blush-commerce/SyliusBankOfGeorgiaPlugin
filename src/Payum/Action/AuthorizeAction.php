@@ -6,11 +6,11 @@ namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter;
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\Reply\HttpRedirect;
-use Payum\Core\Request\Authorize;
-use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\Request\Authorize;
+use Payum\Core\Reply\HttpResponse;
+use Psr\Log\LoggerInterface;
 
 final class AuthorizeAction implements ActionInterface
 {
@@ -37,9 +37,12 @@ final class AuthorizeAction implements ActionInterface
         ]);
 
         if ($createOrderResponse->getStatusCode() === 200) {
-            $this->logger->log('DEBUG', $createOrderResponse->getBody()->getContents());
-            $responseContent = json_decode($createOrderResponse->getBody()->getContents(), true);
-            throw new HttpRedirect($responseContent['links'][1]['href']);
+            $this->logger->log('DEBUG', 'AuthorizeAction -> done.');
+            // $responseContent = json_decode($createOrderResponse->getBody()->getContents(), true);
+
+            // TODO: transition order to completed because throwing HttpResponse will not allow the order to transition its own state
+            // TODO: transition payment state to processing
+            throw new HttpResponse($createOrderResponse->getBody()->getContents(), 200);
         }
 
         // TODO: do something if request status code is not 200

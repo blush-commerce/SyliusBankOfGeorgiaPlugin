@@ -1,7 +1,0 @@
-services:
-    Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloWorldController:
-        arguments:
-            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor'
-            - '@sylius.repository.order'
-        tags:
-            - name: 'controller.service_arguments'

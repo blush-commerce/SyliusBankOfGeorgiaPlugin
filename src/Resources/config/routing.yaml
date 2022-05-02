@@ -1,4 +1,0 @@
-gigamarr.sylius_bank_of_georgia_plugin.hello_world:
-    methods: [ GET ]
-    path: /hello/giga
-    controller: Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\HelloWorldController
