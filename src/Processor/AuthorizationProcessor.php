@@ -15,7 +15,7 @@ final class AuthorizationProcessor implements ProcessorInterface
 {
     public function __construct(
         private Payum $payum,
-        private string $gatewayFactoryName
+        private string $gatewayFactoryName,
     )
     {
     }
