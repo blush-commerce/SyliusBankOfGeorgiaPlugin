@@ -30,13 +30,13 @@ final class OrderToAuthorizeActionPayloadFormatter
         $orderItems = $this->formatOrderItems($order);
 
         $payload = [
-            'intent' => self::INTENT['CAPTURE'], // TODO: make this configurable from the backend
+            'intent' => self::INTENT['AUTHORIZE'], // TODO: make this configurable from the backend
             'items' => $orderItems,
             'locale' => 'ka', // TODO: set this based on current locale context
             'shop_order_id' => (string) $order->getId(),
             'redirect_url' => 'https://blush.ge', // TODO: make this configurable from the backend
             'show_shop_order_id_on_extract' => TRUE, // TODO: make this configurable from the backend
-            'capture_method' => self::CAPTURE_METHOD['AUTOMATIC'], // TODO: make this configurable from the backend
+            'capture_method' => self::CAPTURE_METHOD['MANUAL'], // TODO: make this configurable from the backend
             'purchase_units' => [
                 [
                     'amount' => [
