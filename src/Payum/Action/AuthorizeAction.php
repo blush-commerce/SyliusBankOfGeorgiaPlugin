@@ -6,6 +6,7 @@ namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter;
+use GuzzleHttp\Exception\BadResponseException;
 use Sylius\Component\Core\Model\OrderInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Authorize;
@@ -28,22 +29,24 @@ final class AuthorizeAction implements ActionInterface
         
         $payload = $this->orderToPayloadFormatter->format($order);
 
-        $createOrderResponse = $this->client->post('/checkout/orders', [
-            'body' => json_encode($payload),
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ]
-        ]);
-
-        if ($createOrderResponse->getStatusCode() === 200) {
+        try {
+            $createOrderResponse = $this->client->post('/checkout/orders', [
+                'body' => json_encode($payload),
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+    
             $payment = $order->getLastPayment();
-
-            $payment->setDetails(
-                json_decode($createOrderResponse->getBody()->getContents(), true)
-            );
+            $responseContents = json_decode($createOrderResponse->getBody()->getContents(), true);
+    
+            if ($createOrderResponse->getStatusCode() === 200) {
+                $payment->setDetails($responseContents);
+                $this->logger->log('DEBUG', 'Created order request for order ' . $order->getId());
+            }
+        } catch (BadResponseException $e) {
+            $this->logger->log('CRITICAL', 'API errored when creating a order request for order' . $order->getId() . ' contents: ' . $e->getResponse()->getBody());
         }
-
-        // TODO: do something if request status code is not 200
     }
 
     public function supports($request): bool

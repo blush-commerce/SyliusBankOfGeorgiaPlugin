@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter;
 
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Enum\Intent;
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Enum\CaptureMethod;
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Enum\CurrencyCode;
 use Sylius\Component\Core\Model\OrderInterface;
 
 final class OrderToAuthorizeActionPayloadFormatter
