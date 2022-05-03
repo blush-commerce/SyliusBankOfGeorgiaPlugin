@@ -42,10 +42,11 @@ final class AuthorizeAction implements ActionInterface
     
             if ($createOrderResponse->getStatusCode() === 200) {
                 $payment->setDetails($responseContents);
-                $this->logger->log('DEBUG', 'Created order request for order ' . $order->getId());
+                $this->logger->log('DEBUG', 'Created an order request for order ' . $order->getId());
             }
         } catch (BadResponseException $e) {
-            $this->logger->log('CRITICAL', 'API errored when creating a order request for order' . $order->getId() . ' contents: ' . $e->getResponse()->getBody());
+            // TODO: don't allow order to transition to completed state
+            $this->logger->log('CRITICAL', 'API errored when creating an order request for order ' . $order->getId() . ' contents: ' . $e->getResponse()->getBody());
         }
     }
 
