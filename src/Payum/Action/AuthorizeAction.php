@@ -46,7 +46,7 @@ final class AuthorizeAction implements ActionInterface
             }
         } catch (BadResponseException $e) {
             // TODO: don't allow order to transition to completed state
-            $this->logger->log('CRITICAL', 'API errored when creating an order request for order ' . $order->getId() . ' contents: ' . $e->getResponse()->getBody());
+            $this->logger->critical('API errored when creating an order request for order ' . $order->getId() . ' contents: ' . $e->getResponse()->getBody());
         }
     }
 
