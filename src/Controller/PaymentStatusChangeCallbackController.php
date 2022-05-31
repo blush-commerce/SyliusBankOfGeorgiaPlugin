@@ -33,7 +33,6 @@ final class PaymentStatusChangeCallbackController
                 return new Response(null, 200);
             }
 
-
             return new Response(null, 401);
         }
 
