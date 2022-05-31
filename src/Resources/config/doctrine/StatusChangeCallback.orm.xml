@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback" table="gigamarr_sylius_bank_of_georgia_plugin_status_change_callback">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="orderId" column="order_id" />
+        <field name="status" length="16" />
+        <field name="paymentHash" column="payment_hash" length="64" />
+        <field name="ipayPaymentId" column="ipay_payment_id" length="16" />
+        <field name="statusDescription" column="status_description" length="16" />
+
+        <one-to-one field="order" target-entity="Sylius\Component\Core\Model\Order">
+            <cascade>
+                <cascade-all />
+            </cascade>
+            <join-column name="shop_order_id" referenced-column-name="id" />
+        </one-to-one>
+
+        <field name="paymentMethod" column="payment_method" length="16" />
+        <field name="cardType" column="card_type" length="8" />
+        <field name="pan" length="16" nullable="true" />
+        <field name="transactionId" column="transaction_id" length="64" nullable="true" />
+        <field name="preAuthStatus" column="pre_auth_status" length="32" nullable="true" />
+        <field name="captureMethod" column="capture_method" length="32" nullable="true" />
+
+        <field name="createdAt" column="created_at" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="updatedAt" column="updated_at" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+    </mapped-superclass>
+
+</doctrine-mapping>

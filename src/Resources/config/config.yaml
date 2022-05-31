@@ -15,6 +15,12 @@ winzou_state_machine:
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete', '__invoke']
                     args: ['object']
 
+sylius_resource:
+    resources:
+        gigamarr_sylius_bank_of_georgia_plugin.status_change_callback:
+            classes:
+                model: Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback
+
 monolog:
     channels:
         - bank_of_georgia

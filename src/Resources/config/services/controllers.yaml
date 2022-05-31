@@ -3,3 +3,9 @@ services:
         tags: [controller.service_arguments]
         arguments:
             - '@sylius.repository.order'
+            - '@gigamarr_sylius_bank_of_georgia_plugin.factory.status_change_callback'
+            - '@gigamarr_sylius_bank_of_georgia_plugin.repository.status_change_callback'
+            - '@sm.factory'
+            - '@sylius.manager.payment'
+            - '@sylius.manager.order'
+            - '@monolog.logger.bank_of_georgia'

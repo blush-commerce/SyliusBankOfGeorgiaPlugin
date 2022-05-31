@@ -47,11 +47,13 @@ class BankOfGeorgiaClient
             } else {
                 $message = 'Bank of Georgia API returned unexpected status code ' . $response->getStatusCode() . ' contents: ' . $response->getBody();
                 $this->logger->critical($message);
+
                 throw new ApiReturnedUnexpectedStatusCodeException($message);
             }
         } catch (BadResponseException $e) {
             $message = 'Bank of Georgia API oauth2 request failed. contents: ' . $e->getResponse()->getBody();
             $this->logger->critical($message);
+
             throw new ApiRequestFailedException($message);
         }
 
