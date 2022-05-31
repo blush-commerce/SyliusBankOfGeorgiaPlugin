@@ -77,11 +77,13 @@ final class PaymentStatusChangeCallbackController
                 if ($callback->getStatus() === 'success') {
                     $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
                     $this->paymentManager->flush();
+                } else if ($callback->getStatus() === 'in_progress') {
+                    $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
+                    $this->paymentManager->flush();
                 } else if ($callback->getStatus() === 'error') {
                     $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
                     $this->orderManager->flush();
                 }
-
 
                 $message = 'Successfully transitioned state of payment of order with ID: ' . $order->getId() . '. Callback contained status: "' . $callback->getStatus() . '"';
                 $this->logger->debug($message);

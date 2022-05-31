@@ -14,6 +14,9 @@ winzou_state_machine:
                     on: 'complete'
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete', '__invoke']
                     args: ['object']
+            after:
+                sylius_process_order:
+                    disabled: true
 
 sylius_resource:
     resources:
