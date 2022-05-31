@@ -1,5 +1,6 @@
 imports:
     - { resource: "services/client.yaml" }
+    - { resource: "services/controllers.yaml" }
     - { resource: "services/form_types.yaml" }
     - { resource: "services/formatters.yaml" }
     - { resource: "services/payum.yaml" }

@@ -1,3 +1,5 @@
 services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\PaymentStatusChangeCallbackController:
         tags: [controller.service_arguments]
+        arguments:
+            - '@sylius.repository.order'
