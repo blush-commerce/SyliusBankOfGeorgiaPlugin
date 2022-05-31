@@ -6,6 +6,14 @@ winzou_state_machine:
                     on: ['complete']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor', 'process']
                     args: ['object']
+    
+    sylius_payment:
+        callbacks:
+            guard:  
+                guard_complete:
+                    on: 'complete'
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete', '__invoke']
+                    args: ['object']
 
 monolog:
     channels:

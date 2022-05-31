@@ -1,0 +1,3 @@
+services:
+    Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete:
+        public: true

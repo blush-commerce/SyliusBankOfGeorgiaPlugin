@@ -5,3 +5,4 @@ imports:
     - { resource: "services/payum.yaml" }
     - { resource: "services/processors.yaml" }
     - { resource: "services/providers.yaml" }
+    - { resource: "services/state_machine_guards.yaml" }
