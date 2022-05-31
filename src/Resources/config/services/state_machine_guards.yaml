@@ -1,3 +1,5 @@
 services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete:
         public: true
+        arguments:
+            - '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%'
