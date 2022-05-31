@@ -1,0 +1,4 @@
+gigamarr_sylius_bank_of_georgia_plugin_payment_status_change_callback:
+    path: /bank-of-georgia/status-change-callback
+    controller: Gigamarr\SyliusBankOfGeorgiaPlugin\Controller\PaymentStatusChangeCallbackController
+    methods: POST
