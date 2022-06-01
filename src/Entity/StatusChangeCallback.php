@@ -8,7 +8,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
-final class StatusChangeCallback implements ResourceInterface
+class StatusChangeCallback implements ResourceInterface
 {
     use TimestampableTrait;
 
