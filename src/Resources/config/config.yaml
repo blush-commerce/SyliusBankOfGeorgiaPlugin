@@ -17,7 +17,11 @@ winzou_state_machine:
             before:
                 payment_complete:
                     on: ['complete']
-                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CompletionProcessor', 'process']
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CaptureProcessor', 'process']
+                    args: ['object']
+                payment_cancel:
+                    on: ['cancel']
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CaptureProcessor', 'process']
                     args: ['object']
 
 sylius_resource:

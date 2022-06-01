@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\PaymentToCaptureActionPayloadFormatter;
 use GuzzleHttp\Exception\BadResponseException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Capture;
@@ -15,6 +16,7 @@ final class CaptureAction implements ActionInterface
 {
     public function __construct(
         private BankOfGeorgiaClient $client,
+        private PaymentToCaptureActionPayloadFormatter $paymentToPayloadFormatter,
         private LoggerInterface $logger
     )
     {
@@ -26,9 +28,7 @@ final class CaptureAction implements ActionInterface
         $payment = $request->getModel();
         $orderId = $payment->getDetails()['order_id'];
 
-        $payload = [
-            'auth_type' => 'FULL_COMPLETE'
-        ];
+        $payload = $this->paymentToPayloadFormatter->format($payment);
 
         try {
             $completePreAuthResponse = $this->client->post("/checkout/payment/$orderId/pre-auth/completion", [

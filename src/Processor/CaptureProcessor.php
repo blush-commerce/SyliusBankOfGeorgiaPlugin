@@ -8,7 +8,7 @@ use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 
-final class CompletionProcessor
+final class CaptureProcessor
 {
     public function __construct(
         private Payum $payum,

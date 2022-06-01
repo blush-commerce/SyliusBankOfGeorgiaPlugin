@@ -1,2 +1,4 @@
 services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter: ~
+
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\PaymentToCaptureActionPayloadFormatter: ~
