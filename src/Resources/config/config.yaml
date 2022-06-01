@@ -23,6 +23,11 @@ winzou_state_machine:
                     on: ['cancel']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CaptureProcessor', 'process']
                     args: ['object']
+                
+                payment_refund:
+                    on: ['refund']
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\RefundProcessor', 'process']
+                    args: ['object']
 
 sylius_resource:
     resources:

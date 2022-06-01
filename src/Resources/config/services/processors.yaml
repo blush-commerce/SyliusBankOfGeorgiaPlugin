@@ -10,3 +10,9 @@ services:
         arguments:
             - '@payum'
             - '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%'
+
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\RefundProcessor:
+        public: true
+        arguments:
+            - '@payum'
+            - '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%'
