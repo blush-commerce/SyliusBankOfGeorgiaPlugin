@@ -42,7 +42,13 @@ final class AuthorizeAction implements ActionInterface
     
             if ($createOrderResponse->getStatusCode() === 200) {
                 $payment->setDetails($responseContents);
-                $this->logger->log('DEBUG', 'Created an order request for order ' . $order->getId());
+                
+                $message = 'Created an order request for order ' . $order->getId();
+                $this->logger->debug($message);
+            } else {
+                // TODO: do something to notify the user and/or administrator
+                $message = 'Bank of Georgia API endpoint for creating orders returned unexpected response code ' . $createOrderResponse->getStatusCode() . ' response contents: ' . $createOrderResponse->getBody()->getContents();
+                $this->logger->critical($message);
             }
         } catch (BadResponseException $e) {
             // TODO: don't allow order to transition to completed state

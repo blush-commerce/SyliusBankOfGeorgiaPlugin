@@ -15,3 +15,11 @@ services:
             - '@monolog.logger.bank_of_georgia'
         tags:
             - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.authorize }
+
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\CaptureAction:
+        public: true
+        arguments:
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
+            - '@monolog.logger.bank_of_georgia'
+        tags:
+            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.capture }

@@ -1,30 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Processor;
 
-use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\PaymentMethodInterface;
-use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
-use Payum\Core\Request\Authorize;
+use Payum\Core\Request\Capture;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Core\Model\PaymentMethodInterface;
 
-final class AuthorizationProcessor
+final class CompletionProcessor
 {
     public function __construct(
         private Payum $payum,
-        private string $gatewayFactoryName,
+        private string $gatewayFactoryName
     )
     {
     }
 
-    public function process(OrderInterface $order): void
+    public function process(PaymentInterface $payment): void
     {
-        /** @var PaymentInterface $payment */
-        $payment = $order->getLastPayment();
-
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
@@ -39,7 +33,7 @@ final class AuthorizationProcessor
         $this
             ->payum
             ->getGateway($gatewayConfig->getGatewayName())
-            ->execute(new Authorize($order))
+            ->execute(new Capture($payment))
         ;
     }
 }
