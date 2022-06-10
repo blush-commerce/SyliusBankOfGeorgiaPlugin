@@ -57,8 +57,7 @@ final class RefundAction implements ActionInterface
 
         return
             $request instanceof Refund &&
-            $payment instanceof PaymentInterface &&
-            $payment->getState() === PaymentInterface::STATE_COMPLETED
+            $payment instanceof PaymentInterface
         ;
     }
 }

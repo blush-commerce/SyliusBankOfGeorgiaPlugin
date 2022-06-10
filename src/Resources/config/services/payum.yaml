@@ -20,7 +20,6 @@ services:
         public: true
         arguments:
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
-            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\PaymentToCaptureActionPayloadFormatter'
             - '@monolog.logger.bank_of_georgia'
         tags:
             - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.capture }
@@ -32,3 +31,11 @@ services:
             - '@monolog.logger.bank_of_georgia'
         tags:
             - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.refund }
+
+    Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\UnblockPreAuthAction:
+        public: true
+        arguments:
+            - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
+            - '@monolog.logger.bank_of_georgia'
+        tags:
+            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.unblock }

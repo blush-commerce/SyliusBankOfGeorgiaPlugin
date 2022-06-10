@@ -6,12 +6,12 @@ winzou_state_machine:
                     on: ['complete']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\AuthorizationProcessor', 'process']
                     args: ['object']
-    
+
     sylius_payment:
         callbacks:
-            guard:  
+            guard:
                 guard_complete:
-                    on: 'complete'
+                    on: ['complete']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard\GuardPaymentComplete', '__invoke']
                     args: ['object']
             before:
@@ -19,14 +19,18 @@ winzou_state_machine:
                     on: ['complete']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CaptureProcessor', 'process']
                     args: ['object']
-                payment_cancel:
-                    on: ['cancel']
-                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\CaptureProcessor', 'process']
-                    args: ['object']
-                
+
                 payment_refund:
                     on: ['refund']
                     do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\RefundProcessor', 'process']
+                    args: ['object']
+
+    sylius_order:
+        callbacks:
+            before:
+                order_cancel:
+                    on: ['cancel']
+                    do: ['@Gigamarr\SyliusBankOfGeorgiaPlugin\Processor\PreAuthUnblockProcessor', 'process']
                     args: ['object']
 
 sylius_resource:
