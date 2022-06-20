@@ -43,7 +43,7 @@ final class UnblockPreAuthAction implements ActionInterface
                 ]);
 
                 if ($unblockPreAuthResponse->getStatusCode() === 200) {
-                    $message = "Successfully unblock pre-authorized funds for order $orderId";
+                    $message = "Successfully unblocked pre-authorized funds for order $orderId";
                     $this->logger->debug($message);
                 } else {
                     $message = 'Bank of Georgia API returned unexpected response code ' . $unblockPreAuthResponse->getStatusCode() . ' when unblocking pre-authorized funds of order ' . $orderId . ' contents: ' . $unblockPreAuthResponse->getBody()->getContents();

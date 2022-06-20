@@ -17,6 +17,11 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('gigamarr_sylius_bank_of_georgia_plugin');
         $rootNode = $treeBuilder->getRootNode();
 
+        $rootNode
+            ->children()
+            ->end()
+        ;
+
         return $treeBuilder;
     }
 }

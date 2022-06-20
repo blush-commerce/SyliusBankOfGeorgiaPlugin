@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject;
 
-final class BankOfGeorgiaClientId
+final class BankOfGeorgiaCaptureMethod
 {
     public function __construct(
-        private string $clientId
+        private string $captureMethod
     )
     {
     }
 
-    public function getClientId(): string
+    public function getCaptureMethod(): string
     {
-        return $this->clientId;
+        return $this->captureMethod;
     }
 }

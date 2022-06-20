@@ -5,42 +5,32 @@ declare(strict_types=1);
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter;
 
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\PaymentMethodInterface;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 
 final class OrderToAuthorizeActionPayloadFormatter
 {
-    private const INTENT = [
-        'CAPTURE'   => 'CAPTURE',
-        'AUTHORIZE' => 'AUTHORIZE',
-    ];
-
-    private const CAPTURE_METHOD = [
-        'AUTOMATIC' => 'AUTOMATIC',
-        'MANUAL'    => 'MANUAL',
-    ];
-
-    private const CURRENCY_CODE = [
-        'GEL' => 'GEL',
-        'USD' => 'USD',
-        'EUR' => 'EUR',
-        'GBP' => 'GBP',
-    ];
-
     public function format(OrderInterface $order): array
     {
         $orderItems = $this->formatOrderItems($order);
 
+        /** @var PaymentMethodInterface $paymentMethod */
+        $paymentMethod = $order->getLastPayment()->getMethod();
+        /** @var GatewayConfigInterface $gatewayConfig */
+        $gatewayConfig = $paymentMethod->getGatewayConfig()->getConfig();
+
         $payload = [
-            'intent' => self::INTENT['AUTHORIZE'], // TODO: make this configurable from the backend
+            'intent' => $gatewayConfig['intent'],
             'items' => $orderItems,
             'locale' => 'ka', // TODO: set this based on current locale context
             'shop_order_id' => (string) $order->getId(),
-            'redirect_url' => 'https://blush.ge', // TODO: make this configurable from the backend
-            'show_shop_order_id_on_extract' => TRUE, // TODO: make this configurable from the backend
-            'capture_method' => self::CAPTURE_METHOD['MANUAL'], // TODO: make this configurable from the backend
+            'redirect_url' => 'https://blush.ge', // TODO: use a service for this
+            'show_shop_order_id_on_extract' => $gatewayConfig['show_shop_order_id_on_extract'],
+            'capture_method' => $gatewayConfig['capture_method'],
             'purchase_units' => [
                 [
                     'amount' => [
-                        'currency_code' => self::CURRENCY_CODE['GEL'], // TODO: make this configurable from the backend
+                        'currency_code' => $gatewayConfig['currency_code'],
                         'value' => number_format(abs($order->getTotal()) / 100, 2)
                     ]
                 ]
@@ -62,7 +52,7 @@ final class OrderToAuthorizeActionPayloadFormatter
                 'product_id' => (string) $orderItem->getProduct()->getId()
             ];
         }
-        
+
         return $items;
     }
 }
