@@ -19,6 +19,8 @@ final class OrderToAuthorizeActionPayloadFormatter
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig()->getConfig();
 
+        // TODO: check payment's intent and capture method before before allowing refund, pre-auth complete and pre-auth unblock actions
+
         $payload = [
             'intent' => $gatewayConfig['intent'],
             'items' => $orderItems,
