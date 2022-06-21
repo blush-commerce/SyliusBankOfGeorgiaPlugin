@@ -3,5 +3,5 @@ services:
         arguments:
             - '@sylius.http_client'
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Provider\GatewayConfigProvider'
-            - '%gigamarr.sylius_bank_of_georgia_plugin.api_base_url%'
+            - '%gigamarr_sylius_bank_of_georgia_plugin.api_base_url%'
             - '@monolog.logger.bank_of_georgia'

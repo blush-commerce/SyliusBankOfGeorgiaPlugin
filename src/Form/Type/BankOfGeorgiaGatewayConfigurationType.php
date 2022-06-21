@@ -37,5 +37,6 @@ final class BankOfGeorgiaGatewayConfigurationType extends AbstractType
                 'GBP' => 'GBP'
             ]
         ]);
+        $builder->add('redirect_url', TextType::class);
     }
 }

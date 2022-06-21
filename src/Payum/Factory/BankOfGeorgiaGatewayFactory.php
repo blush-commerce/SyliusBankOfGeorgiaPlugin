@@ -10,6 +10,7 @@ use Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject\BankOfGeorgiaIntent;
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject\BankOfGeorgiaCaptureMethod;
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject\BankOfGeorgiaShowShopOrderIdOnExtract;
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject\BankOfGeorgiaCurrencyCode;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\ValueObject\BankOfGeorgiaRedirectUrl;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
@@ -44,6 +45,10 @@ final class BankOfGeorgiaGatewayFactory extends GatewayFactory
 
         $config['payum.currency_code'] = function (ArrayObject $config) {
             return new BankOfGeorgiaCurrencyCode($config['currency_code']);
+        };
+
+        $config['payum.redirect_url'] = function (ArrayObject $config) {
+            return new BankOfGeorgiaRedirectUrl($config['redirect_url']);
         };
     }
 }

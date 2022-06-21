@@ -2,4 +2,4 @@ services:
     Gigamarr\SyliusBankOfGeorgiaPlugin\Provider\GatewayConfigProvider:
         arguments:
             - '@sylius.repository.gateway_config'
-            - '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%'
+            - '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%'

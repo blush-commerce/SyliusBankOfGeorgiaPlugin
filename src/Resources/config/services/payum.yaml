@@ -14,7 +14,7 @@ services:
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Formatter\OrderToAuthorizeActionPayloadFormatter'
             - '@monolog.logger.bank_of_georgia'
         tags:
-            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.authorize }
+            - { name: payum.action, factory: '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.authorize }
 
     Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\CaptureAction:
         public: true
@@ -22,7 +22,7 @@ services:
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
             - '@monolog.logger.bank_of_georgia'
         tags:
-            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.capture }
+            - { name: payum.action, factory: '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.capture }
 
     Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\RefundAction:
         public: true
@@ -30,7 +30,7 @@ services:
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
             - '@monolog.logger.bank_of_georgia'
         tags:
-            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.refund }
+            - { name: payum.action, factory: '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.refund }
 
     Gigamarr\SyliusBankOfGeorgiaPlugin\Payum\Action\UnblockPreAuthAction:
         public: true
@@ -38,4 +38,4 @@ services:
             - '@Gigamarr\SyliusBankOfGeorgiaPlugin\Client\BankOfGeorgiaClient'
             - '@monolog.logger.bank_of_georgia'
         tags:
-            - { name: payum.action, factory: '%gigamarr.sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.unblock }
+            - { name: payum.action, factory: '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%', alias: payum.action.unblock }
