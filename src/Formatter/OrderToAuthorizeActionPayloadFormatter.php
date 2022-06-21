@@ -11,7 +11,7 @@ use Gigamarr\SyliusBankOfGeorgiaPlugin\Exception\OrderAttributeIsNotResolvableEx
 
 final class OrderToAuthorizeActionPayloadFormatter
 {
-    private const ORDER_RESOLVABLE_ATTRIBUTES = ['id', 'token value', 'number', 'state', 'locale code'];
+    private const ORDER_RESOLVABLE_ATTRIBUTES = ['id', 'token value', 'number', 'state', 'locale code', 'items total'];
 
     public function format(OrderInterface $order): array
     {
@@ -66,34 +66,21 @@ final class OrderToAuthorizeActionPayloadFormatter
         $orderAttributes = [];
 
         if (
-            preg_match_all('/\{(\w+\s?,?)+\}/', $redirectUrl, $orderAttributes)
+            preg_match_all('/\{(\w+\s?\w+)\}/', $redirectUrl, $orderAttributes)
         ) {
-            $allAttributes = [];
-
-            foreach ($orderAttributes[0] as $attributes) {
-                $cleanedAttributes = preg_replace('/\{|\}/', '', $attributes);
-                $attributes = explode(',', $cleanedAttributes);
-
-                $allAttributes = [...$allAttributes, ...$attributes];
-            }
-
-            foreach ($allAttributes as $attribute) {
+            foreach ($orderAttributes[1] as $attribute) {
                 if (in_array($attribute, self::ORDER_RESOLVABLE_ATTRIBUTES)) {
                     $attributeGetterMethod = 'get' . preg_replace('/\s/', '', ucwords($attribute));
 
                     $value = $order->{$attributeGetterMethod}();
 
-                    $redirectUrl = preg_replace("/$attribute/", (string) $value, $redirectUrl); // TODO: this will replace the value of entire redirect url if contains string that's same as attribute name. if, for example redirect url defined in admin is id.example.com/{id}
+                    $redirectUrl = preg_replace("/\{$attribute\}/", (string) $value, $redirectUrl);
                 } else {
                     throw new OrderAttributeIsNotResolvableException("Error while resolving redirect url for Bank of Georgia order. Attribute '$attribute' can not be resolved.");
                 }
             }
-
-            $redirectUrl = preg_replace('/\{|\}/', '', $redirectUrl);
-
-            return $redirectUrl;
-        } else {
-            return $redirectUrl;
         }
+
+        return $redirectUrl;
     }
 }
