@@ -19,15 +19,16 @@ final class AuthorizeAction implements ActionInterface
         private OrderToAuthorizeActionPayloadFormatter $orderToPayloadFormatter,
         private LoggerInterface $logger
     )
-    {    
+    {
     }
-    
+
     public function execute($request)
     {
         /** @var OrderInterface $order */
         $order = $request->getModel();
-        
+
         $payload = $this->orderToPayloadFormatter->format($order);
+        $this->logger->debug(json_encode($payload));
 
         try {
             $createOrderResponse = $this->client->post('/checkout/orders', [
@@ -36,14 +37,14 @@ final class AuthorizeAction implements ActionInterface
                     'Content-Type' => 'application/json'
                 ]
             ]);
-    
+
             $payment = $order->getLastPayment();
             $responseContents = json_decode($createOrderResponse->getBody()->getContents(), true);
-    
+
             if ($createOrderResponse->getStatusCode() === 200) {
                 $payment->setDetails($responseContents);
-                
-                $message = 'Created an order request for order ' . $order->getId();
+
+                $message = 'CCreated an order request for order ' . $order->getId();
                 $this->logger->debug($message);
             } else {
                 // TODO: do something to notify the user and/or administrator
