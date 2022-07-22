@@ -36,7 +36,9 @@ final class PaymentStatusChangeCallbackController
         $order = $this->orderRepository->findOneBy(
             ['id' => $request->get('shop_order_id')]
         );
-        
+
+        $this->logger->debug($request->getContent());
+
         // TODO: check that payment uses BOG gateway
         if ($order) {
             $payment = $order->getLastPayment();
@@ -49,7 +51,7 @@ final class PaymentStatusChangeCallbackController
                 if (null === $callback) {
                     /** @var StatusChangeCallback $callback */
                     $callback = $this->callbackFactory->createNew();
-    
+
                     $callback->setOrderId($request->get('order_id')); // BOG's internal order id, not related to sylius order
                     $callback->setStatus($request->get('status'));
                     $callback->setPaymentHash($request->get('payment_hash'));
@@ -61,7 +63,7 @@ final class PaymentStatusChangeCallbackController
                     $callback->setPan($request->get('pan'));
                     $callback->setTransactionId($request->get('transaction_id'));
                     $callback->setPreAuthStatus($request->get('pre_auth_status'));
-                    $callback->setCaptureMethod($request->get('capture_method'));    
+                    $callback->setCaptureMethod($request->get('capture_method'));
                 } else {
                     $callback->setStatus($request->get('status'));
                     $callback->setStatusDescription($request->get('status_description'));
@@ -99,7 +101,7 @@ final class PaymentStatusChangeCallbackController
 
         $message = 'Bank of Georgia returned callback and order with ID: ' . $request->get('shop_order_id') . ' was not found. request content: ' . $request->getContent();
         $this->logger->critical($message);
-        
+
         return new Response(null, 404);
     }
 }
