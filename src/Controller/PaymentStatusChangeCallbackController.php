@@ -46,30 +46,20 @@ final class PaymentStatusChangeCallbackController
 
             if ($request->get('payment_hash') == $paymentDetails['payment_hash']) {
                 /** @var StatusChangeCallback $callback */
-                $callback = $this->callbackRepository->findOneBy(['order' => $order]);
+                $callback = $this->callbackFactory->createNew();
 
-                if (null === $callback) {
-                    /** @var StatusChangeCallback $callback */
-                    $callback = $this->callbackFactory->createNew();
-
-                    $callback->setOrderId($request->get('order_id')); // BOG's internal order id, not related to sylius order
-                    $callback->setStatus($request->get('status'));
-                    $callback->setPaymentHash($request->get('payment_hash'));
-                    $callback->setIpayPaymentId($request->get('ipay_payment_id'));
-                    $callback->setStatusDescription($request->get('status_description'));
-                    $callback->setOrder($order);
-                    $callback->setPaymentMethod($request->get('payment_method'));
-                    $callback->setCardType($request->get('card_type'));
-                    $callback->setPan($request->get('pan'));
-                    $callback->setTransactionId($request->get('transaction_id'));
-                    $callback->setPreAuthStatus($request->get('pre_auth_status'));
-                    $callback->setCaptureMethod($request->get('capture_method'));
-                } else {
-                    $callback->setStatus($request->get('status'));
-                    $callback->setStatusDescription($request->get('status_description'));
-                    $callback->setPreAuthStatus($request->get('pre_auth_status'));
-                    $callback->setCaptureMethod($request->get('capture_method'));
-                }
+                $callback->setOrderId($request->get('order_id')); // BOG's internal order id, not related to sylius order
+                $callback->setStatus($request->get('status'));
+                $callback->setPaymentHash($request->get('payment_hash'));
+                $callback->setIpayPaymentId($request->get('ipay_payment_id'));
+                $callback->setStatusDescription($request->get('status_description'));
+                $callback->setOrder($order);
+                $callback->setPaymentMethod($request->get('payment_method'));
+                $callback->setCardType($request->get('card_type'));
+                $callback->setPan($request->get('pan'));
+                $callback->setTransactionId($request->get('transaction_id'));
+                $callback->setPreAuthStatus($request->get('pre_auth_status'));
+                $callback->setCaptureMethod($request->get('capture_method'));
 
                 $this->callbackRepository->add($callback);
 

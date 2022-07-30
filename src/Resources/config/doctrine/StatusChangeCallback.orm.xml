@@ -14,12 +14,12 @@
         <field name="ipayPaymentId" column="ipay_payment_id" length="16" />
         <field name="statusDescription" column="status_description" length="16" />
 
-        <one-to-one field="order" target-entity="Sylius\Component\Core\Model\Order">
+        <many-to-one field="order" target-entity="Sylius\Component\Core\Model\Order">
             <cascade>
                 <cascade-all />
             </cascade>
             <join-column name="shop_order_id" referenced-column-name="id" />
-        </one-to-one>
+        </many-to-one>
 
         <field name="paymentMethod" column="payment_method" length="16" />
         <field name="cardType" column="card_type" length="8" />

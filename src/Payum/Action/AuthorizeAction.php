@@ -44,7 +44,7 @@ final class AuthorizeAction implements ActionInterface
             if ($createOrderResponse->getStatusCode() === 200) {
                 $payment->setDetails($responseContents);
 
-                $message = 'CCreated an order request for order ' . $order->getId();
+                $message = 'Created an order request for order ' . $order->getId();
                 $this->logger->debug($message);
             } else {
                 // TODO: do something to notify the user and/or administrator
