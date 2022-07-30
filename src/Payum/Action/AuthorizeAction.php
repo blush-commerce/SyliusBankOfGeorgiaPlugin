@@ -28,7 +28,6 @@ final class AuthorizeAction implements ActionInterface
         $order = $request->getModel();
 
         $payload = $this->orderToPayloadFormatter->format($order);
-        $this->logger->debug(json_encode($payload));
 
         try {
             $createOrderResponse = $this->client->post('/checkout/orders', [
