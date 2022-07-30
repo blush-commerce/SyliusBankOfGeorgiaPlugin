@@ -11,6 +11,7 @@ use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Core\Model\Order;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Payment\PaymentTransitions;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -36,8 +37,6 @@ final class PaymentStatusChangeCallbackController
         $order = $this->orderRepository->findOneBy(
             ['id' => $request->get('shop_order_id')]
         );
-
-        $this->logger->debug('status change callback request content: ' . $request->getContent());
 
         // TODO: check that payment uses BOG gateway
         if ($order) {
@@ -66,18 +65,20 @@ final class PaymentStatusChangeCallbackController
                 $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
                 $orderStateMachine = $this->stateMachineFactory->get($order, OrderTransitions::GRAPH);
 
-                if ($callback->getStatus() === 'success') {
-                    $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
-                    $this->paymentManager->flush();
-                } else if ($callback->getStatus() === 'in_progress') {
-                    $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
-                    $this->paymentManager->flush();
-                } else if ($callback->getStatus() === 'error') {
-                    $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
-                    $this->orderManager->flush();
+                switch ($callback->getStatus()) {
+                    case 'success':
+                        $this->processPaymentSuccess($callback, $payment);
+                        break;
+                    case 'error':
+                        $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
+                        $paymentStateMachine->apply(PaymentTransitions::TRANSITION_FAIL);
+                        break;
+                    case 'in_progress':
+                        $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
+                        break;
                 }
 
-                $message = 'Successfully transitioned state of payment of order with ID: ' . $order->getId() . '. Callback contained status: "' . $callback->getStatus() . '"';
+                $message = 'Successfully added a status change callback for order with ID ' . $order->getId() . '. Callback contained status: "' . $callback->getStatus() . '"';
                 $this->logger->debug($message);
 
                 return new Response(null, 200);
@@ -89,9 +90,25 @@ final class PaymentStatusChangeCallbackController
             return new Response(null, 401);
         }
 
-        $message = 'Bank of Georgia returned callback and order with ID: ' . $request->get('shop_order_id') . ' was not found. request content: ' . $request->getContent();
+        $message = 'Bank of Georgia returned a callback for order with ID: ' . $request->get('shop_order_id') . ' - order with this ID does not exist. request content: ' . $request->getContent();
         $this->logger->critical($message);
 
         return new Response(null, 404);
+    }
+
+    private function processPaymentSuccess(StatusChangeCallback $callback, PaymentInterface $payment): void
+    {
+        $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
+
+        switch ($callback->getPreAuthStatus()) {
+            case 'success':
+                $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
+                break;
+            case null: // if pre-authorization was not used in create order endpoint then preAuthStatus is null
+                $paymentStateMachine->apply(PaymentTransitions::TRANSITION_COMPLETE);
+                break;
+        }
+
+        $this->paymentManager->flush();
     }
 }
