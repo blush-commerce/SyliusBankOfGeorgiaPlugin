@@ -25,4 +25,13 @@ class Order extends BaseOrder
             $this->statusChangeCallbacks->add($statusChangeCallback);
         }
     }
+
+    public function getLastStatusChangeCallback(): ?StatusChangeCallback
+    {
+        if ($this->statusChangeCallbacks->isEmpty()) {
+            return null;
+        }
+
+        return $this->statusChangeCallbacks->last();
+    }
 }
