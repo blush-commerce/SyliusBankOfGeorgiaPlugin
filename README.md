@@ -17,6 +17,8 @@
 
 3. update `App\Entity\Order\Order` class to extend `Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order`
 
+4. Generate migrations `bin/console doctrine:migrations:diff` make sure they're only making expected changes and execute them `bin/console doctrine:migrations:migrate`
+
 ## Usage
 1. Create a new payment method in Sylius admin panel using `Bank of Georgia` option in create button dropdown.
 2.  Set up your client credentials and preferences in the configuration form. Currently plugin supports pre-authorized capturing as well as automatic capturing. Recurring payments are not currently supported.
