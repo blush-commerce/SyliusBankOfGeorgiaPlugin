@@ -12,7 +12,6 @@ use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Payment\PaymentTransitions;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -65,7 +64,6 @@ final class PaymentStatusChangeCallbackController
                 $this->callbackRepository->add($callback);
 
                 $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
-                $orderStateMachine = $this->stateMachineFactory->get($order, OrderTransitions::GRAPH);
 
                 switch ($callback->getStatus()) {
                     case 'success':
@@ -73,9 +71,11 @@ final class PaymentStatusChangeCallbackController
                         break;
                     case 'error':
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_FAIL);
+                        $this->paymentManager->flush();
                         break;
                     case 'in_progress': //
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
+                        $this->paymentManager->flush();
                         break;
                 }
 
