@@ -72,7 +72,6 @@ final class PaymentStatusChangeCallbackController
                         $this->processPaymentSuccess($order, $payment);
                         break;
                     case 'error':
-                        $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL); // apply to order first because otherwise this transition will override payment state transition and we'll have "cancelled" state on order payment not "failed"
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_FAIL);
                         break;
                     case 'in_progress': //
