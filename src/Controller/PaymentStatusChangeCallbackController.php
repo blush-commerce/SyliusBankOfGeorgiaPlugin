@@ -67,6 +67,7 @@ final class PaymentStatusChangeCallbackController
 
                 $this->callbackRepository->add($callback);
 
+                $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
                 $orderStateMachine = $this->stateMachineFactory->get($order, OrderTransitions::GRAPH);
 
                 switch ($callback->getStatus()) {
@@ -76,6 +77,10 @@ final class PaymentStatusChangeCallbackController
                     case 'error':
                         $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
                         $this->orderManager->flush();
+                        break;
+                    case 'in_progress':
+                        $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
+                        $this->paymentManager->flush();
                         break;
                 }
 
