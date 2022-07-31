@@ -38,8 +38,10 @@ final class GuardPaymentComplete
 
         if ($order->usesPreAuthorization()) {
             return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED ? true : false;
+        } else if ($order->hasStatusChangeCallbacks() && 'success' === $order->getLastStatusChangeCallback()->getStatus()) {
+            return true;
+        } else {
+            return false;
         }
-
-        return false;
     }
 }
