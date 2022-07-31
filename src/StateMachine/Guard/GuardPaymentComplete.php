@@ -14,14 +14,14 @@ final class GuardPaymentComplete
     public function __construct(
         private string $gatewayFactoryName
     )
-    {        
+    {
     }
 
     public function __invoke(Payment $payment)
     {
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
-        
+
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig();
 
