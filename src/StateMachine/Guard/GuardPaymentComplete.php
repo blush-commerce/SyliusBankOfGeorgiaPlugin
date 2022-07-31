@@ -8,6 +8,7 @@ use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\Payment;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\OrderPaymentStates;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order;
 
 final class GuardPaymentComplete
 {
@@ -32,6 +33,13 @@ final class GuardPaymentComplete
             return;
         }
 
-        return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED ? true : false;
+        /** @var Order $order */
+        $order = $payment->getOrder();
+
+        if ($order->usesPreAuthorization()) {
+            return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED ? true : false;
+        }
+
+        return false;
     }
 }

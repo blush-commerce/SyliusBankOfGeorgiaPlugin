@@ -26,12 +26,30 @@ class Order extends BaseOrder
         }
     }
 
+    public function hasStatusChangeCallbacks(): bool
+    {
+        return !$this->statusChangeCallbacks->isEmpty();
+    }
+
     public function getLastStatusChangeCallback(): ?StatusChangeCallback
     {
-        if ($this->statusChangeCallbacks->isEmpty()) {
+        if (!$this->hasStatusChangeCallbacks()) {
             return null;
         }
 
         return $this->statusChangeCallbacks->last();
+    }
+
+    public function usesPreAuthorization(): ?bool
+    {
+        if ($this->hasStatusChangeCallbacks()) {
+            if (null !== $this->getLastStatusChangeCallback()->getPreAuthStatus()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return null;
     }
 }
