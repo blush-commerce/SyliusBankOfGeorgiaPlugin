@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Controller;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Payment\PaymentTransitions;
@@ -69,13 +69,13 @@ final class PaymentStatusChangeCallbackController
 
                 switch ($callback->getStatus()) {
                     case 'success':
-                        $this->processPaymentSuccess($callback, $payment);
+                        $this->processPaymentSuccess($order, $payment);
                         break;
                     case 'error':
                         $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL); // apply to order first because otherwise this transition will override payment state transition and we'll have "cancelled" state on order payment not "failed"
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_FAIL);
                         break;
-                    case 'in_progress':
+                    case 'in_progress': //
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
                         break;
                 }
@@ -98,17 +98,15 @@ final class PaymentStatusChangeCallbackController
         return new Response(null, 404);
     }
 
-    private function processPaymentSuccess(StatusChangeCallback $callback, PaymentInterface $payment): void
+    private function processPaymentSuccess(Order $order, PaymentInterface $payment): void
     {
         $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
 
-        switch ($callback->getPreAuthStatus()) {
-            case 'success':
-                $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
-                break;
-            case null: // if pre-authorization was not used in create order endpoint then preAuthStatus is null
-                $paymentStateMachine->apply(PaymentTransitions::TRANSITION_COMPLETE);
-                break;
+        // https://api.bog.ge/docs/ipay/callback
+        if ($order->usesPreAuthorization() && 'in_progress' === $order->getLastStatusChangeCallback()->getPreAuthStatus()) {
+            $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
+        } else {
+            $paymentStateMachine->apply(PaymentTransitions::TRANSITION_COMPLETE);
         }
 
         $this->paymentManager->flush();
