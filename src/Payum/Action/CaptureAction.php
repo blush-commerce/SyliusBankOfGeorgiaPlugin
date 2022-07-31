@@ -10,7 +10,6 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Capture;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Core\OrderPaymentStates;
 
 final class CaptureAction implements ActionInterface
 {

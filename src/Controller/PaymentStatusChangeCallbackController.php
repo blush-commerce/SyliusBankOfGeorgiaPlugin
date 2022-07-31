@@ -12,6 +12,7 @@ use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Payment\PaymentTransitions;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -44,7 +45,10 @@ final class PaymentStatusChangeCallbackController
             $payment = $order->getLastPayment();
             $paymentDetails = $payment->getDetails();
 
-            if ($request->get('payment_hash') == $paymentDetails['payment_hash']) {
+            if (
+                isset($paymentDetails['payment_hash']) &&
+                $request->get('payment_hash') === $paymentDetails['payment_hash']
+            ) {
                 /** @var StatusChangeCallback $callback */
                 $callback = $this->callbackFactory->createNew();
 
@@ -63,19 +67,15 @@ final class PaymentStatusChangeCallbackController
 
                 $this->callbackRepository->add($callback);
 
-                $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
+                $orderStateMachine = $this->stateMachineFactory->get($order, OrderTransitions::GRAPH);
 
                 switch ($callback->getStatus()) {
                     case 'success':
                         $this->processPaymentSuccess($order, $payment);
                         break;
                     case 'error':
-                        $paymentStateMachine->apply(PaymentTransitions::TRANSITION_FAIL);
-                        $this->paymentManager->flush();
-                        break;
-                    case 'in_progress': //
-                        $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
-                        $this->paymentManager->flush();
+                        $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
+                        $this->orderManager->flush();
                         break;
                 }
 
