@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\StateMachine\Guard;
 
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\Payment;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -38,14 +39,38 @@ final class GuardPaymentComplete
         /** @var Order $order */
         $order = $payment->getOrder();
 
-        $statusChangeCallbacks = $this->statusChangeCallbackRepository->findBy(['order' => $order]);
+        /** @var StatusChangeCallback|null $latestStatusChangeCallback */
+        $latestStatusChangeCallback = $this->statusChangeCallbackRepository->findBy(
+            ['order' => $order],
+            orderBy: ['createdAd' => 'DESC']
+        )[0];
 
-        if ($order->usesPreAuthorization()) {
-            return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED ? true : false;
-        } else if ($order->hasStatusChangeCallbacks() && 'success' === $order->getLastStatusChangeCallback()->getStatus()) {
-            return true;
-        } else {
-            return false;
+        switch ($this->orderIsPreAuthorizedAndOrSuccessful($latestStatusChangeCallback)) {
+            case true:
+                return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED;
+            case false:
+                return true;
+            case null:
+                return false;
         }
+    }
+
+    private function orderIsPreAuthorizedAndOrSuccessful(?StatusChangeCallback $callback): ?bool
+    {
+        if ($this->_orderPaymentSuccessful($callback)) {
+            switch ($callback->getPreAuthStatus()) {
+                case 'in_progress': // in_progress means order is pre-authorized and ready to be either unblocked (refunded) or verified (given to merchant)
+                    return true;
+                case null:
+                    return false;
+            }
+        }
+
+        return null;
+    }
+
+    private function _orderPaymentSuccessful(?StatusChangeCallback $callback): bool
+    {
+        return !is_null($callback) && 'success' === $callback->getStatus();
     }
 }
