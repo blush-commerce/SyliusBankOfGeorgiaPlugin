@@ -45,32 +45,12 @@ final class GuardPaymentComplete
             orderBy: ['createdAt' => 'DESC']
         )[0];
 
-        switch ($this->orderIsPreAuthorizedAndOrSuccessful($latestStatusChangeCallback)) {
-            case true:
-                return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED;
-            case false:
-                return true;
-            case null:
-                return false;
-        }
-    }
+        if ($latestStatusChangeCallback->isSuccessful()) {
+            $allowCompletion = $latestStatusChangeCallback->usesPreAuthorization() ? $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED : true;
 
-    private function orderIsPreAuthorizedAndOrSuccessful(?StatusChangeCallback $callback): ?bool
-    {
-        if ($this->_orderPaymentSuccessful($callback)) {
-            switch ($callback->getPreAuthStatus()) {
-                case 'in_progress': // in_progress means order is pre-authorized and ready to be either unblocked (refunded) or verified (given to merchant)
-                    return true;
-                case null:
-                    return false;
-            }
+            return $allowCompletion;
         }
 
-        return null;
-    }
-
-    private function _orderPaymentSuccessful(?StatusChangeCallback $callback): bool
-    {
-        return !is_null($callback) && 'success' === $callback->getStatus();
+        return false;
     }
 }

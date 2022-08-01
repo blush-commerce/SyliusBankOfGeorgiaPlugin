@@ -6,9 +6,8 @@ namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Entity;
 
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
-use Sylius\Component\Resource\Model\ResourceInterface;
 
-class StatusChangeCallback implements ResourceInterface
+class StatusChangeCallback implements StatusChangeCallbackInterface
 {
     use TimestampableTrait;
 
@@ -79,6 +78,11 @@ class StatusChangeCallback implements ResourceInterface
     public function setStatus(?string $status): void
     {
         $this->status = $status;
+    }
+
+    public function isSuccessful(): bool
+    {
+        return $this->getStatus() === self::STATUS_SUCCESS;
     }
 
     public function getPaymentHash(): ?string
@@ -169,6 +173,11 @@ class StatusChangeCallback implements ResourceInterface
     public function setPreAuthStatus(?string $preAuthStatus): void
     {
         $this->preAuthStatus = $preAuthStatus;
+    }
+
+    public function usesPreAuthorization(): bool
+    {
+        return $this->getPreAuthStatus() === self::PRE_AUTH_STATUS_IN_PROGRESS;
     }
 
     public function getCaptureMethod(): ?string

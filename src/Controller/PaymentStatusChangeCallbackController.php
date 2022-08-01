@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Controller;
 
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback;
+use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallbackInterface;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
@@ -49,7 +49,7 @@ final class PaymentStatusChangeCallbackController
                 isset($paymentDetails['payment_hash']) &&
                 $request->get('payment_hash') === $paymentDetails['payment_hash']
             ) {
-                /** @var StatusChangeCallback $callback */
+                /** @var StatusChangeCallbackInterface $callback */
                 $callback = $this->callbackFactory->createNew();
 
                 $callback->setOrderId($request->get('order_id')); // BOG's internal order id, not related to sylius order
@@ -71,14 +71,14 @@ final class PaymentStatusChangeCallbackController
                 $orderStateMachine = $this->stateMachineFactory->get($order, OrderTransitions::GRAPH);
 
                 switch ($callback->getStatus()) {
-                    case 'success':
-                        $this->processPaymentSuccess($callback, $payment);
+                    case StatusChangeCallbackInterface::STATUS_SUCCESS:
+                        $this->processSuccessCallback($callback, $payment);
                         break;
-                    case 'error':
+                    case StatusChangeCallbackInterface::STATUS_ERROR:
                         $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
                         $this->orderManager->flush();
                         break;
-                    case 'in_progress':
+                    case StatusChangeCallbackInterface::STATUS_IN_PROGRESS:
                         $paymentStateMachine->apply(PaymentTransitions::TRANSITION_PROCESS);
                         $this->paymentManager->flush();
                         break;
@@ -102,19 +102,13 @@ final class PaymentStatusChangeCallbackController
         return new Response(null, 404);
     }
 
-    private function processPaymentSuccess(StatusChangeCallback $callback, PaymentInterface $payment): void
+    private function processSuccessCallback(StatusChangeCallbackInterface $callback, PaymentInterface $payment): void
     {
         $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
 
-        // https://api.bog.ge/docs/ipay/callback
-        if (
-            $callback->getPreAuthStatus() &&
-            'in_progress' === $callback->getPreAuthStatus()
-        ) {
-            $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
-        } else {
-            $paymentStateMachine->apply(PaymentTransitions::TRANSITION_COMPLETE);
-        }
+        $transition = $callback->usesPreAuthorization() ? PaymentTransitions::TRANSITION_AUTHORIZE : PaymentTransitions::TRANSITION_COMPLETE;
+
+        $paymentStateMachine->apply($transition);
 
         $this->paymentManager->flush();
     }
