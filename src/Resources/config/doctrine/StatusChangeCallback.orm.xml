@@ -14,7 +14,7 @@
         <field name="ipayPaymentId" column="ipay_payment_id" length="16" />
         <field name="statusDescription" column="status_description" length="16" />
 
-        <many-to-one field="order" target-entity="Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order" inversed-by="statusChangeCallbacks">
+        <many-to-one field="order" target-entity="Sylius\Component\Core\Model\Order">
             <cascade>
                 <cascade-all />
             </cascade>
