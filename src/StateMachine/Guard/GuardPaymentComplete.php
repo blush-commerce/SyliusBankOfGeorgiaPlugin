@@ -42,7 +42,7 @@ final class GuardPaymentComplete
         /** @var StatusChangeCallback|null $latestStatusChangeCallback */
         $latestStatusChangeCallback = $this->statusChangeCallbackRepository->findBy(
             ['order' => $order],
-            orderBy: ['createdAd' => 'DESC']
+            orderBy: ['createdAt' => 'DESC']
         )[0];
 
         switch ($this->orderIsPreAuthorizedAndOrSuccessful($latestStatusChangeCallback)) {
