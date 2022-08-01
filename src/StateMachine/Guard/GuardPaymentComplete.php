@@ -39,14 +39,14 @@ final class GuardPaymentComplete
         /** @var Order $order */
         $order = $payment->getOrder();
 
-        /** @var StatusChangeCallback|null $latestStatusChangeCallback */
-        $latestStatusChangeCallback = $this->statusChangeCallbackRepository->findBy(
+        /** @var StatusChangeCallback[] $statusChangeCallbacks */
+        $statusChangeCallbacks = $this->statusChangeCallbackRepository->findBy(
             ['order' => $order],
             orderBy: ['createdAt' => 'DESC']
-        )[0];
+        );
 
-        if ($latestStatusChangeCallback->isSuccessful()) {
-            $allowCompletion = $latestStatusChangeCallback->usesPreAuthorization() ? $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED : true;
+        if (isset($statusChangeCallbacks[0]) && $statusChangeCallbacks[0]->isSuccessful()) {
+            $allowCompletion = $statusChangeCallbacks[0]->usesPreAuthorization() ? $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED : true;
 
             return $allowCompletion;
         }
