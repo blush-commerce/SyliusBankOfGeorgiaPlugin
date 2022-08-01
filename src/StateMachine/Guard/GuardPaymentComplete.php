@@ -8,12 +8,14 @@ use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\Payment;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\OrderPaymentStates;
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order;
+use Sylius\Component\Core\Order;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class GuardPaymentComplete
 {
     public function __construct(
-        private string $gatewayFactoryName
+        private string $gatewayFactoryName,
+        private RepositoryInterface $statusChangeCallbackRepository
     )
     {
     }
@@ -35,6 +37,8 @@ final class GuardPaymentComplete
 
         /** @var Order $order */
         $order = $payment->getOrder();
+
+        $statusChangeCallbacks = $this->statusChangeCallbackRepository->findBy(['order' => $order]);
 
         if ($order->usesPreAuthorization()) {
             return $payment->getState() === OrderPaymentStates::STATE_AUTHORIZED ? true : false;

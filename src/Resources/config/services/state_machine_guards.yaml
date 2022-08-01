@@ -3,3 +3,4 @@ services:
         public: true
         arguments:
             - '%gigamarr_sylius_bank_of_georgia_plugin.gateway_factory_name%'
+            - 'gigamarr_sylius_bank_of_georgia_plugin.repository.status_change_callback'

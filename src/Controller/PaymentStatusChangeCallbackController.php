@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Gigamarr\SyliusBankOfGeorgiaPlugin\Controller;
 
 use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\StatusChangeCallback;
-use Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Payment\PaymentTransitions;
@@ -72,7 +72,7 @@ final class PaymentStatusChangeCallbackController
 
                 switch ($callback->getStatus()) {
                     case 'success':
-                        $this->processPaymentSuccess($order, $payment);
+                        $this->processPaymentSuccess($callback, $payment);
                         break;
                     case 'error':
                         $orderStateMachine->apply(OrderTransitions::TRANSITION_CANCEL);
@@ -102,12 +102,15 @@ final class PaymentStatusChangeCallbackController
         return new Response(null, 404);
     }
 
-    private function processPaymentSuccess(Order $order, PaymentInterface $payment): void
+    private function processPaymentSuccess(StatusChangeCallback $callback, PaymentInterface $payment): void
     {
         $paymentStateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
 
         // https://api.bog.ge/docs/ipay/callback
-        if ($order->usesPreAuthorization() && 'in_progress' === $order->getLastStatusChangeCallback()->getPreAuthStatus()) {
+        if (
+            $callback->getPreAuthStatus() &&
+            'in_progress' === $callback->getPreAuthStatus()
+        ) {
             $paymentStateMachine->apply(PaymentTransitions::TRANSITION_AUTHORIZE);
         } else {
             $paymentStateMachine->apply(PaymentTransitions::TRANSITION_COMPLETE);
