@@ -2,6 +2,7 @@
 
  At the moment this plugin is not on any public repository to install it.
 1. define a separate repository in `composer.json` file
+
 ```
 // ...
 "repositories":  [
@@ -15,9 +16,31 @@
 
 2. Run `composer install gigamarr/sylius-bank-of-georgia-plugin`
 
-3. update `App\Entity\Order\Order` class to extend `Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order`
+3. Import routes
 
-4. Generate migrations `bin/console doctrine:migrations:diff` make sure they're only making expected changes and execute them `bin/console doctrine:migrations:migrate`
+`config/routes.yaml`
+
+```
+# ...
+
+gigamarr_sylius_bank_of_georgia_plugin:
+    resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/routing.yaml"
+
+# ...
+```
+
+4. Import configuration
+
+`config/packages/bank_of_georgia.yaml`
+
+```
+imports:
+    - { resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/config.yaml" }
+```
+
+5. update `App\Entity\Order\Order` class to extend `Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order`
+
+6. Generate migrations `bin/console doctrine:migrations:diff` make sure they're only making expected changes and execute them `bin/console doctrine:migrations:migrate`
 
 ## Usage
 1. Create a new payment method in Sylius admin panel using `Bank of Georgia` option in create button dropdown.
