@@ -38,9 +38,7 @@ imports:
     - { resource: "@GigamarrSyliusBankOfGeorgiaPlugin/Resources/config/config.yaml" }
 ```
 
-5. update `App\Entity\Order\Order` class to extend `Gigamarr\SyliusBankOfGeorgiaPlugin\Entity\Order`
-
-6. Generate migrations `bin/console doctrine:migrations:diff` make sure they're only making expected changes and execute them `bin/console doctrine:migrations:migrate`
+5. Generate migrations `bin/console doctrine:migrations:diff` make sure they're only making expected changes and execute them `bin/console doctrine:migrations:migrate`
 
 ## Usage
 1. Create a new payment method in Sylius admin panel using `Bank of Georgia` option in create button dropdown.
