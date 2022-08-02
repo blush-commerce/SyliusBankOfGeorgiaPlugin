@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\OrderPaymentStates;
+use Sylius\Component\Payment\Model\PaymentInterface;
 
 final class UnblockPreAuthAction implements ActionInterface
 {
@@ -24,7 +25,7 @@ final class UnblockPreAuthAction implements ActionInterface
     {
         /** @var OrderInterface $order */
         $order = $request->getModel();
-        $orderId = $order->getId();
+        $orderId = $order->getLastPayment()->getDetails()['order_id']; // this is an orderId of the order on BOG side. Not Sylius order id.
 
         $payload = [
             'auth_type' => 'CANCEL'
