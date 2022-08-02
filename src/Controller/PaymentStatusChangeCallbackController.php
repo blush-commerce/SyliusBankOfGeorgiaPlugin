@@ -38,8 +38,6 @@ final class PaymentStatusChangeCallbackController
             ['id' => $request->get('shop_order_id')]
         );
 
-        $this->logger->debug('Status change callback content: ' . $request->getContent());
-
         // TODO: check that payment uses BOG gateway
         if ($order) {
             $payment = $order->getLastPayment();
