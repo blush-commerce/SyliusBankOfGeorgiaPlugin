@@ -10,7 +10,6 @@ use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\OrderPaymentStates;
-use Sylius\Component\Payment\Model\PaymentInterface;
 
 final class UnblockPreAuthAction implements ActionInterface
 {
