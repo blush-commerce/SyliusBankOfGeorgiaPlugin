@@ -27,7 +27,8 @@ final class UnblockPreAuthAction implements ActionInterface
         $orderId = $order->getId();
 
         $payload = [
-            'auth_type' => 'CANCEL'
+            'auth_type' => 'CANCEL',
+            'order_id' => $orderId
         ];
 
         if (

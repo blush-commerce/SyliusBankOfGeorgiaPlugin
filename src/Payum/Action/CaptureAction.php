@@ -27,7 +27,8 @@ final class CaptureAction implements ActionInterface
         $orderId = $payment->getDetails()['order_id'];
 
         $payload = [
-            'auth_type' => 'FULL_COMPLETE'
+            'auth_type' => 'FULL_COMPLETE',
+            'order_id' => $orderId
         ];
 
         try {
