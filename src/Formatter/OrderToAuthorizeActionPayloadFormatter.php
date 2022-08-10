@@ -22,12 +22,10 @@ final class OrderToAuthorizeActionPayloadFormatter
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig()->getConfig();
 
-        // TODO: check payment's intent and capture method before before allowing refund, pre-auth complete and pre-auth unblock actions
-
         $payload = [
             'intent' => $gatewayConfig['intent'],
             'items' => $orderItems,
-            'locale' => 'ka', // TODO: set this based on current locale context
+            'locale' => $order->getLocaleCode() === 'ka_GE' ? 'ka' : 'en-US',
             'shop_order_id' => (string) $order->getId(),
             'redirect_url' => $this->resolveRedirectUrl($order, $gatewayConfig['redirect_url']),
             'show_shop_order_id_on_extract' => $gatewayConfig['show_shop_order_id_on_extract'],
