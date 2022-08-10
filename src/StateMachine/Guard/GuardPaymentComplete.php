@@ -28,11 +28,8 @@ final class GuardPaymentComplete
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig();
 
-        /**
-         * TODO: this guard should not affect payments which are not using Bank of Georgia gateway
-         */
         if ($gatewayConfig->getFactoryName() !== $this->gatewayFactoryName) {
-            return;
+            return true;
         }
 
         /** @var OrderInterface $order */
