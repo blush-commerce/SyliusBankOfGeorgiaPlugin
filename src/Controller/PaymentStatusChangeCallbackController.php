@@ -41,7 +41,7 @@ final class PaymentStatusChangeCallbackController
         // TODO: check that payment uses BOG gateway
         if ($order) {
             $payment = $order->getLastPayment();
-            $paymentDetails = $payment->getDetails();
+            $paymentDetails = $payment->getDetails(); // TODO: this could be null.
 
             if (
                 isset($paymentDetails['payment_hash']) &&
